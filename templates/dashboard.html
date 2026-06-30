@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | RateWise</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-warning shadow">
+
+    <div class="container-xxl px-3">
+
+        <a class="navbar-brand fw-bold fs-2 text-dark" href="#">
+            RateWise
+        </a>
+
+            <div class="ms-auto">
+                <span class="text-dark me-3">
+                    Welcome, {{ request.user.username }}
+                </span>
+
+                <a href="{% url 'logout' %}" class="btn btn-outline-dark fw-semibold px-4">
+                    Logout
+                </a>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Dashboard Content -->
+    <div class="container mt-5">
+
+
+        <div class="row g-4 justify-content-center">
+
+            <!-- Create Form -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+
+                        <h4>Create Form</h4>
+
+                        <p class="text-muted">
+                            Create a new feedback form.
+                        </p>
+
+                        <a href="{% url 'create_form' %}" class="btn btn-warning">
+                            Create
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Forms -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+
+                        <h4>My Forms</h4>
+
+                        <p class="text-muted">
+                            View and manage your forms.
+                        </p>
+
+                        <a href="{% url 'my_forms' %}" class="btn btn-warning">
+                            View Forms
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

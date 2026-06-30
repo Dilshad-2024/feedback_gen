@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Form | RateWise</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+</head>
+
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg bg-warning shadow">
+
+    <div class="container-fluid">
+
+        <a class="navbar-brand fw-bold fs-2 text-dark"
+           href="{% url 'dashboard' %}">
+
+            RateWise
+
+        </a>
+
+    </div>
+
+</nav>
+
+<div class="container mt-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-9">
+
+            <div class="card shadow">
+
+                <div class="navbar-brand fw-bold fs-2 text-darK bg-warning p-3">
+
+                    <h3 class="mb-0">
+
+                        Edit Form
+
+                    </h3>
+
+                </div>
+
+                <div class="card-body">
+
+                    <form method="POST">
+
+                        {% csrf_token %}
+                <!-- Form Title -->
+
+                <div class="mb-4">
+
+                    <label class="form-label fw-semibold">
+
+                        Form Title
+
+                    </label>
+
+                    <input
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        value="{{ form.title }}"
+                        required>
+
+                </div>
+
+                <hr>
+
+                <h4 class="mb-3">
+                    Details
+                </h4>
+
+                <!-- Email (Cannot be edited or deleted) -->
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        class="form-control"
+                        value="Email Address (Required)"
+                        readonly>
+                </div>
+
+                <!-- Additional Details -->
+
+                <div id="fields">
+
+                {% for field in form.additional_fields.all %}
+
+                    <div class="field-block mb-4">
+
+                        <div class="input-group">
+
+                            <input
+                                type="text"
+                                name="fields[]"
+                                class="form-control"
+                                value="{{ field.field_name }}"
+                                required>
+
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                onclick="removeField(this)">
+
+                                Delete
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+                </div>
+                <div class="mb-4">
+
+                    <button
+                        type="button"
+                        class="btn btn-dark"
+                        onclick="addField()">
+
+                        + Add Detail
+
+                    </button>
+
+                </div>
+                <hr class="my-4">
+
+                <h4 class="mb-3">
+
+                    Questions
+
+                </h4>
+
+                <p class="text-muted">
+
+                    Add, edit or remove the questions that will appear in the feedback form.
+
+                </p>
+
+                <div id="questions">
+
+                {% for question in form.questions.all %}
+
+                    <div class="question-block mb-4">
+
+                        <div class="input-group">
+
+                            <input
+                                type="text"
+                                name="questions[]"
+                                class="form-control"
+                                value="{{ question.question_text }}"
+                                required>
+
+                            <button
+                                type="button"
+                                class="btn btn-danger px-4"
+                                onclick="removeQuestion(this)">
+
+                                Delete
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+                </div>
+                <div class="mb-4">
+
+                    <button
+                        type="button"
+                        class="btn btn-dark"
+                        onclick="addQuestion()">
+
+                        + Add Question
+
+                    </button>
+
+                </div>
+
+                <hr class="my-4">
+
+                <button
+                    type="submit"
+                    class="btn btn-dark w-100">
+
+                    Save Changes
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+<script>
+
+function addQuestion(){
+
+    const container =
+        document.getElementById("questions");
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "question-block mb-4";
+
+    div.innerHTML = `
+
+    <div class="input-group">
+
+        <input
+            type="text"
+            name="questions[]"
+            class="form-control"
+            placeholder="Enter Question"
+            required>
+
+        <button
+            type="button"
+            class="btn btn-danger px-4"
+            onclick="removeQuestion(this)">
+
+            Delete
+
+        </button>
+
+    </div>
+
+`;
+
+    container.appendChild(div);
+
+}
+
+
+function removeQuestion(button){
+
+    const container =
+        document.getElementById("questions");
+
+    if(container.children.length > 1){
+
+        button.closest(".question-block").remove();
+
+    }
+    else{
+
+        alert("At least one question is required.");
+
+    }
+
+}
+
+
+function addField(){
+
+    const container =
+        document.getElementById("fields");
+
+    const div =
+        document.createElement("div");
+
+    div.className =
+        "field-block mb-4";
+
+   div.innerHTML = `
+
+    <div class="input-group">
+
+        <input
+            type="text"
+            name="fields[]"
+            class="form-control"
+            placeholder="Example : Room Number"
+            required>
+
+        <button
+            type="button"
+            class="btn btn-danger"
+            onclick="removeField(this)">
+
+            Delete
+
+        </button>
+
+    </div>
+
+`;
+
+    container.appendChild(div);
+
+}
+
+
+function removeField(button){
+
+    button.parentElement.parentElement.remove();
+
+}
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
