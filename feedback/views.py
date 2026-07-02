@@ -3,9 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg
 from .sentiment import analyze_sentiment
-# from django.http import HttpResponse
+from django.views.decorators.http import require_POST
 
-@login_required
 @login_required
 def create_form(request):
 
@@ -206,10 +205,14 @@ def form_analytics(request, form_id):
     )
 
     rating_filter = request.GET.get("rating")
-
+    
     if rating_filter:
+        rating = int(rating_filter)
+        comments = form.responses.filter(
+            overall_rating__gte=rating - 0.5,
+            overall_rating__lt=rating + 0.5,
+        ).exclude(comment="")
 
-        comments = form.responses.exclude(comment="").prefetch_related("field_values__field")
 
     return render(
         request,
@@ -263,37 +266,6 @@ def ai_analysis(request, form_id):
             "positive": positive,
             "negative": negative,
             "neutral": neutral,
-        }
-    )
-
-def view_comments(request, form_id):
-
-    form = get_object_or_404(
-        Form,
-        id=form_id,
-        created_by=request.user
-    )
-
-    comments = form.responses.exclude(
-        comment=""
-    )
-
-    rating = request.GET.get("rating")
-
-    if rating:
-
-        comments = comments.filter(
-            overall_rating__gte=int(rating),
-            overall_rating__lt=int(rating) + 1
-        )
-
-    return render(
-        request,
-        "feedback/view_comments.html",
-        {
-            "form": form,
-            "comments": comments,
-            "selected_rating": rating
         }
     )
 
@@ -352,7 +324,8 @@ def edit_form(request, form_id):
             "form": form
         }
     )
-    
+
+@require_POST    
 def delete_form(request, form_id):
 
     form = get_object_or_404(

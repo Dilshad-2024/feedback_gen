@@ -12,6 +12,6 @@ urlpatterns = [
     path('edit-form/<int:form_id>/', views.edit_form, name='edit_form'),
     path('form-analytics/<int:form_id>/', views.form_analytics, name='form_analytics'),
     path('ai_analysis/<int:form_id>/', views.ai_analysis, name='ai_analysis'),
-    path('comments/<int:form_id>/',views.view_comments,name='view_comments'),
+    # path('comments/<int:form_id>/',views.view_comments,name='view_comments'),
     path("delete/<int:form_id>/",views.delete_form,name="delete_form")
 ]

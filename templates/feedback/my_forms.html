@@ -78,13 +78,19 @@
                                     
                                     {% else %}
 
-                                    <a href="{% url 'delete_form' form.id %}"
+                                    {% comment %} <a href="{% url 'delete_form' form.id %}"
                                     class="btn btn-danger"
                                     onclick="return confirm('Are you sure you want to delete this form and all its responses?');">
 
                                         Delete Form
 
-                                    </a>
+                                    </a> {% endcomment %}
+                                    <form method="POST" action="{% url 'delete_form' form.id %}" onsubmit="return confirm('Are you sure you want to delete this form and all its responses?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">
+                                            Delete Form
+                                        </button>
+                                    </form>
 
                                     {% endif %}
 
