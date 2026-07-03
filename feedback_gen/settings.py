@@ -22,7 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 import os
 
-SECRET_KEY = os.environ.get("tASNEEMA@1973")
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "tASNEEMA@1973"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
@@ -30,11 +33,11 @@ DEBUG = os.environ.get("DEBUG", "False") == "True"
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    "ratewise.onrender.com",
+    "feedback-gen-2.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://ratewise.onrender.com",
+    "https://feedback-gen-2.onrender.com",
 ]
 # Application definition
 
@@ -81,17 +84,27 @@ WSGI_APPLICATION = "feedback_gen.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'form_generator',
-        'USER':'root',
-        'PASSWORD':'19517305',
-        'HOST':'127.0.0.1',
-        'PORT':'3306'
+print("RENDER =", os.environ.get("RENDER"))
+if os.environ.get("RENDER"):
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
+else:
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'form_generator',
+            'USER':'root',
+            'PASSWORD':'19517305',
+            'HOST':'127.0.0.1',
+            'PORT':'3306'
+        }
+    }
+print(DATABASES["default"]["ENGINE"])
 
 
 # Password validation
